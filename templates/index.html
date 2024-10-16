@@ -7,27 +7,47 @@
     
     <style>
         body {
+            background-image: url('/static/images/volleyball_background.jpg');
+            background-repeat: no-repeat;
+            background-size: cover;
             font-family: Arial, sans-serif;
         }
         #chatbox {
             width: 300px;
-            height: 400px;
+            height: 500px;
             border: 1px solid #ccc;
             padding: 10px;
             overflow-y: auto;
             margin: 20px auto;
             background-color: #f9f9f9;
+            display: flex;
+            flex-direction: column;
         }
         .message {
+            display: flex;
+            align-items: center;
+            padding: 10px;
             margin: 5px 0;
+            border-radius: 5px;
+            max-width: 100%;
         }
         .user-message {
-            text-align: right;
+            background-color: #e0e0e0;
             color: blue;
+            margin-left: auto;
+            justify-content: flex-end;
+            flex-direction: row-reverse;
         }
         .bot-message {
-            text-align: left;
+            display: flex;
             color: green;
+            margin-right: auto;
+        }
+        .bot-icon {
+            margin-right: 5px;
+            width: 30px;
+            height: 30px;
+            flex-shrink: 0;
         }
         #user-input {
             width: 80%;
@@ -53,6 +73,10 @@
         const userInput = document.getElementById('user-input');
         const sendButton = document.getElementById('send-button');
 
+        window.onload = function() {
+            displayMessage("Hello! I am your volleyball assistant. Ask me about training, nutrition, injury, or mental!", 'bot');
+        };
+
         sendButton.addEventListener('click', () => {
             const userMessage = userInput.value;
             if (userMessage) {
@@ -66,7 +90,17 @@
             const messageElement = document.createElement('div');
             messageElement.classList.add('message');
             messageElement.classList.add(sender === 'user' ? 'user-message' : 'bot-message');
-            messageElement.innerText = message;
+            
+            if (sender === 'bot') {
+                const iconElement = document.createElement('img');
+                iconElement.src = '/static/images/bot-icon.png';
+                iconElement.classList.add('bot-icon');
+                messageElement.appendChild(iconElement);
+            }
+
+            const textElement = document.createElement('span');
+            textElement.innerText = message;
+            messageElement.appendChild(textElement);
             chatbox.appendChild(messageElement);
             chatbox.scrollTop = chatbox.scrollHeight; // Auto scroll to the bottom
         }
